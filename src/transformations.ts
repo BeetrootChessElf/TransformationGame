@@ -14,8 +14,8 @@ export function gridToString(grid: Grid) {
   return grid.map(i => i.join(" ")).join("\n");
 }
 
-function renderGrid(grid: Grid) {
-  console.log(gridToString(grid) + "\n----");
+function renderGrid(grid: Grid, note?: string) {
+  console.log(`${gridToString(grid)}\n${note ?? ""}----`);
 }
 
 export function flipX(grid: Grid, [top, left]: Coord, [bottom, right]: Coord): Grid {
@@ -198,4 +198,46 @@ export function applyTransformation(
   }
 
   throw new Error("Invalid transformation type");
+}
+
+function applyRandomTransformation(grid: Grid): Grid {
+  const top = Math.floor(Math.random() * (grid.length - 2));
+  const bottom = Math.floor(Math.random() * (grid.length - 2 - top)) + top + 2;
+  const size = bottom - top;
+  const left = Math.floor(Math.random() * (grid[0].length - size));
+  const right = left + size;
+
+  const transformationType =
+    Math.random() < 0.5 ? TransformationType.Flip : TransformationType.Rotate;
+  if (transformationType === TransformationType.Flip) {
+    const flipType = [FlipType.X, FlipType.Y, FlipType.Pos, FlipType.Neg][
+      Math.floor(Math.random() * 4)
+    ];
+    console.log(
+      [top, left],
+      [bottom, right],
+      TransformationType[transformationType],
+      FlipType[flipType]
+    );
+    return applyTransformation(grid, [top, left], [bottom, right], transformationType, flipType);
+  } else {
+    const rotateType = [RotateType.R90, RotateType.R180, RotateType.R270][
+      Math.floor(Math.random() * 3)
+    ];
+    console.log(
+      [top, left],
+      [bottom, right],
+      TransformationType[transformationType],
+      RotateType[rotateType]
+    );
+    return applyTransformation(grid, [top, left], [bottom, right], transformationType, rotateType);
+  }
+}
+
+export function applyRandomTransformations(grid: Grid, count: number): Grid {
+  let transformedGrid = grid;
+  for (let i = 0; i < count; i++) {
+    transformedGrid = applyRandomTransformation(transformedGrid);
+  }
+  return transformedGrid;
 }

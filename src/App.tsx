@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import "./transformations";
 import {
+  applyRandomTransformations,
   applyTransformation,
   Coord,
   FlipType,
@@ -38,8 +39,9 @@ function GridComponent({
               key={cellIndex}>
               <div
                 className="cellinner"
-                style={{ backgroundColor: ["#ff7777", "#ffff77", "#77ff77", "#7777ff"][cell] }}
-              />
+                style={{ backgroundColor: ["#ff7777", "#ffff77", "#77ff77", "#7777ff"][cell] }}>
+                {rowIndex},{cellIndex}
+              </div>
             </div>
           ))}
         </div>
@@ -48,12 +50,21 @@ function GridComponent({
   );
 }
 
+function generateRandomGrid() {
+  const grid = generateGrid(8, 8, 4);
+  return applyRandomTransformations(grid, 1);
+}
 function App() {
-  const [grid, setGrid] = useState(generateGrid(8, 8, 4));
+  const [grid, setGrid] = useState<Grid>([]);
+  useEffect(() => {
+    setGrid(generateRandomGrid());
+  }, []);
 
   const [positions, setPositions] = useState<Coord[]>([]);
 
-  const canMove = positions.length >= 2 && (positions[0][0] !== positions[1][0] || positions[0][1] !== positions[1][1]);
+  const canMove =
+    positions.length >= 2 &&
+    (positions[0][0] !== positions[1][0] || positions[0][1] !== positions[1][1]);
   const canSquareMove =
     canMove &&
     Math.abs(positions[0][0] - positions[1][0]) === Math.abs(positions[0][1] - positions[1][1]);
@@ -84,36 +95,40 @@ function App() {
       />
       {canMove && (
         <div>
-          {canFlipX && <button
-            onClick={() => {
-              setPositions([]);
-              setGrid(
-                applyTransformation(
-                  grid,
-                  positions[0],
-                  positions[1],
-                  TransformationType.Flip,
-                  FlipType.X
-                )
-              );
-            }}>
-            Flip X
-          </button>}
-          {canFlipY && <button
-            onClick={() => {
-              setPositions([]);
-              setGrid(
-                applyTransformation(
-                  grid,
-                  positions[0],
-                  positions[1],
-                  TransformationType.Flip,
-                  FlipType.Y
-                )
-              );
-            }}>
-            Flip Y
-          </button>}
+          {canFlipX && (
+            <button
+              onClick={() => {
+                setPositions([]);
+                setGrid(
+                  applyTransformation(
+                    grid,
+                    positions[0],
+                    positions[1],
+                    TransformationType.Flip,
+                    FlipType.X
+                  )
+                );
+              }}>
+              Flip X
+            </button>
+          )}
+          {canFlipY && (
+            <button
+              onClick={() => {
+                setPositions([]);
+                setGrid(
+                  applyTransformation(
+                    grid,
+                    positions[0],
+                    positions[1],
+                    TransformationType.Flip,
+                    FlipType.Y
+                  )
+                );
+              }}>
+              Flip Y
+            </button>
+          )}
           {canSquareMove && (
             <>
               <button
