@@ -1,42 +1,71 @@
-.App {
-  text-align: center;
+body {
+  background-color: #232323;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.grid {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.row {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  margin: 0;
+  align-items: stretch;
+  justify-content: stretch;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.cell {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 8px;
 }
 
-.App-link {
-  color: #61dafb;
+.cellbordertop {
+  border-top: 4px solid white;
+  padding-top: 4px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.cellborderbottom {
+  border-bottom: 4px solid white;
+  padding-bottom: 4px;
 }
 
-button {
-  font-size: calc(10px + 2vmin);
+.cellborderleft {
+  border-left: 4px solid white;
+  padding-left: 4px;
+}
+
+.cellborderright {
+  border-right: 4px solid white;
+  padding-right: 4px;
+}
+
+
+
+.cellbordertop.cellborderleft {
+  border-top-left-radius: 8px;
+}
+
+.cellborderbottom.cellborderleft {
+  border-bottom-left-radius: 8px;
+}
+
+.cellbordertop.cellborderright {
+  border-top-right-radius: 8px;
+}
+
+.cellborderbottom.cellborderright {
+  border-bottom-right-radius: 8px;
+}
+
+.cellinner {
+  height: 80px;
+  width: 80px;
+  border-radius: 100%;
 }
