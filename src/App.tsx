@@ -62,9 +62,11 @@ function App() {
 
   const [positions, setPositions] = useState<Coord[]>([]);
 
+  const hasMoveInputted = positions.length >= 2;
   const canMove =
-    positions.length >= 2 &&
-    (positions[0][0] !== positions[1][0] || positions[0][1] !== positions[1][1]);
+    hasMoveInputted &&
+    Math.abs(positions[0][0] - positions[1][0]) >= 2 &&
+    Math.abs(positions[0][1] - positions[1][1]) >= 2;
   const canSquareMove =
     canMove &&
     Math.abs(positions[0][0] - positions[1][0]) === Math.abs(positions[0][1] - positions[1][1]);
